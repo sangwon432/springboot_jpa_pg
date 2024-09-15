@@ -23,7 +23,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto createPost(PostDto postDto) {
-        return null;
+
+        //convert DTO to Entity
+        Post post = mapToEntity(postDto);
+        Post newPost = postRepository.save(post);
+
+        // convert Entity to DTO
+        PostDto postResponse = mapToDto(newPost);
+        return postResponse;
     }
 
     @Override
@@ -32,7 +39,7 @@ public class PostServiceImpl implements PostService {
         List<PostDto> contents = listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
         PostResponse postResponse = new PostResponse();
         postResponse.setContents(contents);
-        return null;
+        return postResponse;
     }
 
     @Override
