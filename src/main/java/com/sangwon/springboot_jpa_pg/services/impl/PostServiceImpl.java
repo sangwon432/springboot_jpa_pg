@@ -1,6 +1,7 @@
 package com.sangwon.springboot_jpa_pg.services.impl;
 
 import com.sangwon.springboot_jpa_pg.entities.Post;
+import com.sangwon.springboot_jpa_pg.exceptions.ResourceNotFoundException;
 import com.sangwon.springboot_jpa_pg.payloads.PostDto;
 import com.sangwon.springboot_jpa_pg.payloads.PostResponse;
 import com.sangwon.springboot_jpa_pg.repositories.PostRepository;
@@ -44,7 +45,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto getPostById(long id) {
-        return null;
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        return mapToDto(post);
     }
 
     @Override
