@@ -6,6 +6,9 @@ import com.sangwon.springboot_jpa_pg.payloads.PostResponse;
 import com.sangwon.springboot_jpa_pg.repositories.PostRepository;
 import com.sangwon.springboot_jpa_pg.services.PostService;
 import com.sangwon.springboot_jpa_pg.utils.AppConstraints;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/posts")
+@Tag(name = "CRUD REST APIs for Post Resource")
 public class PostController {
     private PostService postService;
 
@@ -21,6 +25,14 @@ public class PostController {
     }
 
     // get all posts
+    @Operation(
+            summary = "Get All Posts REST API",
+            description = "Get All Posts ..."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http Status 200 SUCCESS"
+    )
     @GetMapping("/all")
     public PostResponse getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = AppConstraints.DEFAULT_PAGE_NO, required = false) int pageNo,
@@ -38,6 +50,14 @@ public class PostController {
 
     // register a post
     @PostMapping("/create")
+    @Operation(
+            summary = "Create Post Rest API",
+            description = "Create Post REST API"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http Status 201 CREATED"
+    )
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
