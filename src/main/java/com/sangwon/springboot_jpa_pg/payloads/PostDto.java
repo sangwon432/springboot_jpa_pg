@@ -21,5 +21,5 @@ public class PostDto {
     private String content;
 
     @NotEmpty
-    private String category;
+    private Long categoryId;
 }
