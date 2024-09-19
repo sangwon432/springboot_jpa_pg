@@ -5,6 +5,7 @@ import com.sangwon.springboot_jpa_pg.payloads.PostDto;
 import com.sangwon.springboot_jpa_pg.payloads.PostResponse;
 import com.sangwon.springboot_jpa_pg.repositories.PostRepository;
 import com.sangwon.springboot_jpa_pg.services.PostService;
+import com.sangwon.springboot_jpa_pg.utils.AppConstraints;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,13 @@ public class PostController {
 
     // get all posts
     @GetMapping("/all")
-    public PostResponse getAllPosts() {
-        return postService.getAllPosts();
+    public PostResponse getAllPosts(
+            @RequestParam(value = "pageNo", defaultValue = AppConstraints.DEFAULT_PAGE_NO, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstraints.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstraints.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstraints.DEFAULT_SORT_DIR, required = false) String sortDir
+    ) {
+        return postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
     }
 
     @GetMapping("/{id}")
