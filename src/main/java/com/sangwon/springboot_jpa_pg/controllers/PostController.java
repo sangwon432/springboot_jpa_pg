@@ -9,7 +9,7 @@ import com.sangwon.springboot_jpa_pg.utils.AppConstraints;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+//import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +44,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") String id) {
+    public ResponseEntity<PostDto> getPostById(@PathVariable(name = "id") Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
@@ -58,17 +58,17 @@ public class PostController {
             responseCode = "201",
             description = "Http Status 201 CREATED"
     )
-    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePost(@PathVariable(name = "id") String id, @Valid @RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> updatePost(@PathVariable(name = "id") Long id, @RequestBody PostDto postDto) {
         return ResponseEntity.ok(postService.updatePostById(id, postDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePostById(@PathVariable(name = "id") String id) {
+    public ResponseEntity<String> deletePostById(@PathVariable(name = "id") Long id) {
         postService.deletePostById(id);
         return new ResponseEntity<>("post deleted", HttpStatus.OK);
     }

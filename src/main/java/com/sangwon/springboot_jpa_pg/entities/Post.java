@@ -15,9 +15,9 @@ public class Post {
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.UUID
+            strategy = GenerationType.AUTO
     )
-    private String id;
+    private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;

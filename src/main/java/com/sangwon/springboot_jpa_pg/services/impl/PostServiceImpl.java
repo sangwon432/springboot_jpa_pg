@@ -36,18 +36,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto createPost(PostDto postDto) {
-//
-//        Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
-//
-//        //convert DTO to Entity
-//        Post post = mapToEntity(postDto);
-//        post.setCategory(category);
-//        Post newPost = postRepository.save(post);
-//
-//        // convert Entity to DTO
-//        PostDto postResponse = mapToDto(newPost);
-//        return postResponse;
-        return null;
+
+        Category category = categoryRepository.findById(postDto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
+
+
+        //convert DTO to Entity
+        Post post = mapToEntity(postDto);
+        post.setCategory(category);
+        Post newPost = postRepository.save(post);
+
+        // convert Entity to DTO
+        PostDto postResponse = mapToDto(newPost);
+        return postResponse;
     }
 
     @Override
@@ -72,27 +73,26 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDto getPostById(String id) {
+    public PostDto getPostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         return mapToDto(post);
     }
 
     @Override
-    public PostDto updatePostById(String id, PostDto postDto) {
-//        Post updatedpost = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
-//        Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
-//        updatedpost.setTitle(postDto.getTitle());
-//        updatedpost.setContent(postDto.getContent());
-//        updatedpost.setCategory(category);
-//        updatedpost.setDescription(postDto.getDescription());
-//
-//        updatedpost = postRepository.save(updatedpost);
-//        return mapToDto(updatedpost);
-        return null;
+    public PostDto updatePostById(Long id, PostDto postDto) {
+        Post updatedpost = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
+        updatedpost.setTitle(postDto.getTitle());
+        updatedpost.setContent(postDto.getContent());
+        updatedpost.setCategory(category);
+        updatedpost.setDescription(postDto.getDescription());
+
+        updatedpost = postRepository.save(updatedpost);
+        return mapToDto(updatedpost);
     }
 
     @Override
-    public void deletePostById(String  id) {
+    public void deletePostById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         postRepository.delete(post);
     }
