@@ -1,5 +1,6 @@
 package com.sangwon.springboot_jpa_pg.controllers;
 
+import com.sangwon.springboot_jpa_pg.payloads.LogInDto;
 import com.sangwon.springboot_jpa_pg.payloads.SignUpDto;
 import com.sangwon.springboot_jpa_pg.services.AuthService;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,12 @@ public class AuthController {
     public ResponseEntity<String> signUpUser(@RequestBody SignUpDto signUpDto) {
         String response = authService.signUpUser(signUpDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<String> logInUser(@RequestBody LogInDto logInDto) {
+        String token = authService.loginUser(logInDto);
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
 

@@ -5,8 +5,14 @@ import com.sangwon.springboot_jpa_pg.exceptions.UserApiException;
 import com.sangwon.springboot_jpa_pg.payloads.LogInDto;
 import com.sangwon.springboot_jpa_pg.payloads.SignUpDto;
 import com.sangwon.springboot_jpa_pg.repositories.UserRepository;
+import com.sangwon.springboot_jpa_pg.security.JwtTokenProvider;
 import com.sangwon.springboot_jpa_pg.services.AuthService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +20,31 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    private JwtTokenProvider jwtTokenProvider;
 
 
     public AuthServiceImpl(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider jwtTokenProvider
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
     public String loginUser(LogInDto logInDto) {
-        return "";
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                logInDto.getEmail(), logInDto.getPassword()
+        ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenProvider.generateToken(authentication);
+        return token;
     }
 
     @Override

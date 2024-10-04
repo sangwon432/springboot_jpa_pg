@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogInDto {
-    private String usernameOrEmail;
+    private String email;
     private String password;
 }
