@@ -7,21 +7,21 @@ import com.sangwon.springboot_jpa_pg.payloads.SignUpDto;
 import com.sangwon.springboot_jpa_pg.repositories.UserRepository;
 import com.sangwon.springboot_jpa_pg.services.AuthService;
 import org.springframework.http.HttpStatus;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
-//    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
 
     public AuthServiceImpl(
-            UserRepository userRepository
-//            PasswordEncoder passwordEncoder
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
-//        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -43,8 +43,7 @@ public class AuthServiceImpl implements AuthService {
         user.setName(signUpDto.getName());
         user.setUsername(signUpDto.getUsername());
         user.setEmail(signUpDto.getEmail());
-//        user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-        user.setPassword(signUpDto.getPassword());
+        user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
         userRepository.save(user);
         return "User Registered Successfully";
